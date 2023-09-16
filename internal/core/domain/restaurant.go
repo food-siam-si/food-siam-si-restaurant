@@ -1,7 +1,7 @@
 package domain
 
 type Restaurant struct {
-	Id           string
+	Id           uint
 	UserId       string
 	Name         string
 	Description  string
@@ -25,6 +25,6 @@ const (
 )
 
 type RestaurantType struct {
-	Id   string
+	Id   uint
 	Name string
 }
