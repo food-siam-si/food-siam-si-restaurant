@@ -2,7 +2,7 @@ package domain
 
 type Restaurant struct {
 	Id           uint
-	UserId       string
+	UserId       uint
 	Name         string
 	Description  string
 	LocationLat  float64
@@ -11,7 +11,7 @@ type Restaurant struct {
 	AveragePrice AveragePrice
 	ImageUrl     string
 	IsInService  bool
-	Type         RestaurantType
+	Types        []RestaurantType
 }
 
 type AveragePrice string
@@ -23,8 +23,3 @@ const (
 	MoreThanFiveHundread      AveragePrice = "MoreThanFiveHundread"
 	MoreThanOneThousand       AveragePrice = "MoreThanOneThousand"
 )
-
-type RestaurantType struct {
-	Id   uint
-	Name string
-}

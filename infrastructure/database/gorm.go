@@ -3,6 +3,7 @@ package database
 import (
 	"fmt"
 	"food-siam-si-restaurant/config"
+	"food-siam-si-restaurant/internal/repositories/models"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -17,6 +18,8 @@ func NewGorm() *gorm.DB {
 	if err != nil {
 		panic("failed to connect database")
 	}
+
+	db.AutoMigrate(&models.Restaurant{}, &models.RestaurantType{})
 
 	return db
 }
