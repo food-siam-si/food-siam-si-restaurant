@@ -15,6 +15,7 @@ type dbConfig struct {
 
 type appConfig struct {
 	Environment string `envconfig:"ENV"`
+	Host        string `envconfig:"HOST"`
 }
 
 type config struct {
