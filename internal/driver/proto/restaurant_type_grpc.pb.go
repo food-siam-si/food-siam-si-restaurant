@@ -11,6 +11,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -22,7 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type RestaurantTypeServiceClient interface {
-	GetAll(ctx context.Context, in *User, opts ...grpc.CallOption) (*GetRestaurantTypeResponse, error)
+	GetAll(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetRestaurantTypeResponse, error)
 }
 
 type restaurantTypeServiceClient struct {
@@ -33,7 +34,7 @@ func NewRestaurantTypeServiceClient(cc grpc.ClientConnInterface) RestaurantTypeS
 	return &restaurantTypeServiceClient{cc}
 }
 
-func (c *restaurantTypeServiceClient) GetAll(ctx context.Context, in *User, opts ...grpc.CallOption) (*GetRestaurantTypeResponse, error) {
+func (c *restaurantTypeServiceClient) GetAll(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetRestaurantTypeResponse, error) {
 	out := new(GetRestaurantTypeResponse)
 	err := c.cc.Invoke(ctx, "/RestaurantTypeService/GetAll", in, out, opts...)
 	if err != nil {
@@ -46,7 +47,7 @@ func (c *restaurantTypeServiceClient) GetAll(ctx context.Context, in *User, opts
 // All implementations must embed UnimplementedRestaurantTypeServiceServer
 // for forward compatibility
 type RestaurantTypeServiceServer interface {
-	GetAll(context.Context, *User) (*GetRestaurantTypeResponse, error)
+	GetAll(context.Context, *emptypb.Empty) (*GetRestaurantTypeResponse, error)
 	mustEmbedUnimplementedRestaurantTypeServiceServer()
 }
 
@@ -54,7 +55,7 @@ type RestaurantTypeServiceServer interface {
 type UnimplementedRestaurantTypeServiceServer struct {
 }
 
-func (UnimplementedRestaurantTypeServiceServer) GetAll(context.Context, *User) (*GetRestaurantTypeResponse, error) {
+func (UnimplementedRestaurantTypeServiceServer) GetAll(context.Context, *emptypb.Empty) (*GetRestaurantTypeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAll not implemented")
 }
 func (UnimplementedRestaurantTypeServiceServer) mustEmbedUnimplementedRestaurantTypeServiceServer() {}
@@ -71,7 +72,7 @@ func RegisterRestaurantTypeServiceServer(s grpc.ServiceRegistrar, srv Restaurant
 }
 
 func _RestaurantTypeService_GetAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(User)
+	in := new(emptypb.Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -83,7 +84,7 @@ func _RestaurantTypeService_GetAll_Handler(srv interface{}, ctx context.Context,
 		FullMethod: "/RestaurantTypeService/GetAll",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RestaurantTypeServiceServer).GetAll(ctx, req.(*User))
+		return srv.(RestaurantTypeServiceServer).GetAll(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }

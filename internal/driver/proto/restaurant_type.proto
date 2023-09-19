@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-import "internal/driver/proto/user.proto";
+import "google/protobuf/empty.proto";
 
 option go_package = "./proto";
 
@@ -15,5 +15,5 @@ message GetRestaurantTypeResponse {
 }
 
 service RestaurantTypeService {
-  rpc GetAll (User) returns (GetRestaurantTypeResponse) {}
+  rpc GetAll (google.protobuf.Empty) returns (GetRestaurantTypeResponse) {}
 }
