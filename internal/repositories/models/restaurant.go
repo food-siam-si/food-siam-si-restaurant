@@ -11,9 +11,9 @@ type Restaurant struct {
 	LocationLong float64             `gorm:"not null"`
 	PhoneNumber  string              `gorm:"not null"`
 	AveragePrice domain.AveragePrice `sql:"type:ENUM('LowerThanHundread','HundreadToTwoHundread','TwoHundreadToFiveHundread','MoreThanFiveHundread','MoreThanOneThousand')"`
-	ImageUrl     string
-	IsInService  bool             `gorm:"not null;default:true"`
-	Types        []RestaurantType `gorm:"many2many:restaurant_restaurant_type"`
+	ImageUrl     string              `gorm:"not null"`
+	IsInService  bool                `gorm:"not null;default:true"`
+	Types        []RestaurantType    `gorm:"many2many:restaurant_restaurant_type"`
 }
 
 func ParseRestaurant(restaurant *domain.Restaurant) *Restaurant {

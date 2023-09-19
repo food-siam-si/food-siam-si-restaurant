@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+option go_package = "./proto";
+
+import "internal/driver/proto/restaurant_type.proto";
+
+message Restaurant {
+  uint32 id = 1;
+  uint32 userId = 2;
+  string name = 3;
+  optional string description = 4;
+  float locationLat = 5;
+  float locationLong = 6;
+  string phoneNumber = 7;
+  AveragePrice averagePrice = 8;
+  string imageUrl = 9;
+  bool isInService = 10;
+  repeated RestaurantType  restaurantType  = 11;
+}
+
+enum AveragePrice {
+  LowerThanHundreds = 0;
+  HundreadToTwoHundread = 1;
+  TwoHundreadToFiveHundread = 2;
+  MoreThanFiveHundread = 3;
+  MoreThanOneThousand = 4;
+}
