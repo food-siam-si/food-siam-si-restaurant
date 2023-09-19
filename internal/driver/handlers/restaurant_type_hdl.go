@@ -15,7 +15,7 @@ func NewRestaurantTypeHandler() proto.RestaurantTypeServiceServer {
 	return RestaurantTypeHandler{}
 }
 
-func (handler RestaurantTypeHandler) GetRestaurantTypes(context.Context, *emptypb.Empty) (*proto.GetRestaurantTypeResponse, error) {
+func (handler RestaurantTypeHandler) GetAll(context.Context, *emptypb.Empty) (*proto.GetRestaurantTypeResponse, error) {
 	return &proto.GetRestaurantTypeResponse{
 		RestaurantTypes: []*proto.RestaurantType{
 			{

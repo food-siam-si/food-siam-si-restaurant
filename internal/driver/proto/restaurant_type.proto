@@ -1,5 +1,6 @@
 syntax = "proto3";
-import "google/protobuf/empty.proto";
+
+import "internal/driver/proto/user.proto";
 
 option go_package = "./proto";
 
@@ -13,8 +14,6 @@ message GetRestaurantTypeResponse {
   repeated RestaurantType restaurantTypes = 1;
 }
 
-message Empty {}
-
 service RestaurantTypeService {
-  rpc GetRestaurantTypes (google.protobuf.Empty) returns (GetRestaurantTypeResponse) {}
+  rpc GetAll (User) returns (GetRestaurantTypeResponse) {}
 }

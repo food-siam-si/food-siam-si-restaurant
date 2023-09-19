@@ -11,7 +11,6 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
-	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -23,7 +22,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type RestaurantTypeServiceClient interface {
-	GetRestaurantTypes(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetRestaurantTypeResponse, error)
+	GetAll(ctx context.Context, in *User, opts ...grpc.CallOption) (*GetRestaurantTypeResponse, error)
 }
 
 type restaurantTypeServiceClient struct {
@@ -34,9 +33,9 @@ func NewRestaurantTypeServiceClient(cc grpc.ClientConnInterface) RestaurantTypeS
 	return &restaurantTypeServiceClient{cc}
 }
 
-func (c *restaurantTypeServiceClient) GetRestaurantTypes(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetRestaurantTypeResponse, error) {
+func (c *restaurantTypeServiceClient) GetAll(ctx context.Context, in *User, opts ...grpc.CallOption) (*GetRestaurantTypeResponse, error) {
 	out := new(GetRestaurantTypeResponse)
-	err := c.cc.Invoke(ctx, "/RestaurantTypeService/GetRestaurantTypes", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/RestaurantTypeService/GetAll", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +46,7 @@ func (c *restaurantTypeServiceClient) GetRestaurantTypes(ctx context.Context, in
 // All implementations must embed UnimplementedRestaurantTypeServiceServer
 // for forward compatibility
 type RestaurantTypeServiceServer interface {
-	GetRestaurantTypes(context.Context, *emptypb.Empty) (*GetRestaurantTypeResponse, error)
+	GetAll(context.Context, *User) (*GetRestaurantTypeResponse, error)
 	mustEmbedUnimplementedRestaurantTypeServiceServer()
 }
 
@@ -55,8 +54,8 @@ type RestaurantTypeServiceServer interface {
 type UnimplementedRestaurantTypeServiceServer struct {
 }
 
-func (UnimplementedRestaurantTypeServiceServer) GetRestaurantTypes(context.Context, *emptypb.Empty) (*GetRestaurantTypeResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetRestaurantTypes not implemented")
+func (UnimplementedRestaurantTypeServiceServer) GetAll(context.Context, *User) (*GetRestaurantTypeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAll not implemented")
 }
 func (UnimplementedRestaurantTypeServiceServer) mustEmbedUnimplementedRestaurantTypeServiceServer() {}
 
@@ -71,20 +70,20 @@ func RegisterRestaurantTypeServiceServer(s grpc.ServiceRegistrar, srv Restaurant
 	s.RegisterService(&RestaurantTypeService_ServiceDesc, srv)
 }
 
-func _RestaurantTypeService_GetRestaurantTypes_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(emptypb.Empty)
+func _RestaurantTypeService_GetAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(User)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RestaurantTypeServiceServer).GetRestaurantTypes(ctx, in)
+		return srv.(RestaurantTypeServiceServer).GetAll(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/RestaurantTypeService/GetRestaurantTypes",
+		FullMethod: "/RestaurantTypeService/GetAll",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RestaurantTypeServiceServer).GetRestaurantTypes(ctx, req.(*emptypb.Empty))
+		return srv.(RestaurantTypeServiceServer).GetAll(ctx, req.(*User))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -97,8 +96,8 @@ var RestaurantTypeService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*RestaurantTypeServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetRestaurantTypes",
-			Handler:    _RestaurantTypeService_GetRestaurantTypes_Handler,
+			MethodName: "GetAll",
+			Handler:    _RestaurantTypeService_GetAll_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
