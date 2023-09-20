@@ -22,13 +22,13 @@ func (r *restaurantRepository) Create(payload *domain.Restaurant) error {
 	return r.db.Create(restaurant).Error
 }
 
-func (r *restaurantRepository) Update(id uint, payload *domain.Restaurant) error {
+func (r *restaurantRepository) Update(id uint32, payload *domain.Restaurant) error {
 	restaurant := models.ParseRestaurant(payload)
 
 	return r.db.Model(&restaurant).Where("id = ?", id).Updates(restaurant).Error
 }
 
-func (r *restaurantRepository) FindById(id uint) (domain.Restaurant, error) {
+func (r *restaurantRepository) FindById(id uint32) (domain.Restaurant, error) {
 	restaurant := models.Restaurant{}
 
 	err := r.db.Where("id = ?", id).Preload("Types").First(&restaurant).Error
@@ -72,7 +72,7 @@ func (r *restaurantRepository) FindAllType() ([]domain.RestaurantType, error) {
 	return result, nil
 }
 
-func (r *restaurantRepository) FindTypeById(id uint) (domain.RestaurantType, error) {
+func (r *restaurantRepository) FindTypeById(id uint32) (domain.RestaurantType, error) {
 	restaurantType := models.RestaurantType{}
 
 	err := r.db.Where("id = ?", id).First(&restaurantType).Error

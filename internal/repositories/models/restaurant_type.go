@@ -3,7 +3,7 @@ package models
 import "food-siam-si-restaurant/internal/core/domain"
 
 type RestaurantType struct {
-	Id   uint   `gorm:"primaryKey;autoIncrement"`
+	Id   uint32 `gorm:"primaryKey;autoIncrement"`
 	Name string `gorm:"not null"`
 }
 

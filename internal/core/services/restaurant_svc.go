@@ -13,7 +13,7 @@ func NewRestaurantService(repo ports.RestaurantRepository) ports.RestaurantServi
 	return &restaurantService{repo}
 }
 
-func (svc *restaurantService) VerifyRestaurantIdentity(id uint) error {
+func (svc *restaurantService) VerifyRestaurantIdentity(id uint32) error {
 	return nil
 }
 
@@ -21,11 +21,11 @@ func (svc *restaurantService) Create(restaurant domain.Restaurant) error {
 	return nil
 }
 
-func (svc *restaurantService) FindById(id uint) (domain.Restaurant, error) {
+func (svc *restaurantService) FindById(id uint32) (domain.Restaurant, error) {
 	return domain.Restaurant{}, nil
 }
 
-func (svc *restaurantService) Update(id uint, restaurant domain.Restaurant) error {
+func (svc *restaurantService) Update(id uint32, restaurant domain.Restaurant) error {
 	return nil
 }
 
@@ -34,5 +34,5 @@ func (svc *restaurantService) RandomRestaurant() (domain.Restaurant, error) {
 }
 
 func (svc *restaurantService) FindAllType() ([]domain.RestaurantType, error) {
-	return []domain.RestaurantType{}, nil
+	return svc.repo.FindAllType()
 }

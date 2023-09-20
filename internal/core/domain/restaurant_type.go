@@ -1,6 +1,6 @@
 package domain
 
 type RestaurantType struct {
-	Id   uint
+	Id   uint32
 	Name string
 }

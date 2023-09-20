@@ -3,8 +3,8 @@ package models
 import "food-siam-si-restaurant/internal/core/domain"
 
 type Restaurant struct {
-	Id           uint   `gorm:"primaryKey;autoIncrement"`
-	UserId       uint   `gorm:"not null"`
+	Id           uint32 `gorm:"primaryKey;autoIncrement"`
+	UserId       uint32 `gorm:"not null"`
 	Name         string `gorm:"not null"`
 	Description  string
 	LocationLat  float64             `gorm:"not null"`

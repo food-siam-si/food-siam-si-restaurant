@@ -2,8 +2,8 @@ syntax = "proto3";
 
 option go_package = "./proto";
 
-import "internal/driver/proto/user.proto";
-import "internal/driver/proto/restaurant_type.proto";
+import "internal/handlers/proto/user.proto";
+import "internal/handlers/proto/restaurant_type.proto";
 import "google/protobuf/wrappers.proto";
 import "google/protobuf/empty.proto";
 

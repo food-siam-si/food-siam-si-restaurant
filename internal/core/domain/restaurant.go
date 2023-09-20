@@ -1,8 +1,8 @@
 package domain
 
 type Restaurant struct {
-	Id           uint
-	UserId       uint
+	Id           uint32
+	UserId       uint32
 	Name         string
 	Description  string
 	LocationLat  float64

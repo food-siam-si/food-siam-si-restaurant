@@ -6,7 +6,7 @@ option go_package = "./proto";
 
 
 message RestaurantType {
-  int32 id = 1;
+  uint32 id = 1;
   string name = 2;
 }
 

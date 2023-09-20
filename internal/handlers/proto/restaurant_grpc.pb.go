@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v4.24.3
-// source: internal/driver/proto/restaurant.proto
+// source: internal/handlers/proto/restaurant.proto
 
 package proto
 
@@ -247,5 +247,5 @@ var RestaurantService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "internal/driver/proto/restaurant.proto",
+	Metadata: "internal/handlers/proto/restaurant.proto",
 }

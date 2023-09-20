@@ -20,16 +20,20 @@ func NewRestaurantTypeHandler(svc ports.RestaurantService) proto.RestaurantTypeS
 }
 
 func (handler RestaurantTypeHandler) GetAll(context.Context, *emptypb.Empty) (*proto.GetRestaurantTypeResponse, error) {
+	res, err := handler.svc.FindAllType()
+	if err != nil {
+		return nil, err
+	}
+
+	var restaurantTypes []*proto.RestaurantType
+	for _, r := range res {
+		restaurantTypes = append(restaurantTypes, &proto.RestaurantType{
+			Id:   r.Id,
+			Name: r.Name,
+		})
+	}
+
 	return &proto.GetRestaurantTypeResponse{
-		RestaurantTypes: []*proto.RestaurantType{
-			{
-				Id:   1,
-				Name: "Thai",
-			},
-			{
-				Id:   2,
-				Name: "Chinese",
-			},
-		},
+		RestaurantTypes: restaurantTypes,
 	}, nil
 }
