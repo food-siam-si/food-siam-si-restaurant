@@ -5,7 +5,8 @@
 1. `go mod tidy` to install all dependencies
 2. `go install github.com/cosmtrek/air@latest` to install air
 3. create `.env` file
-4. `make dev` to start live server
+4. `docker-compose up` to start database
+5. `make dev` to start live server
 
 ### Commands
 
