@@ -36,6 +36,20 @@ func ParseRestaurant(restaurant *domain.Restaurant) *Restaurant {
 	}
 }
 
+func ParseRestaurantToMap(restaurant *domain.Restaurant) *map[string]interface{} {
+	return &map[string]interface{}{
+		"UserId":       restaurant.UserId,
+		"Name":         restaurant.Name,
+		"Description":  restaurant.Description,
+		"LocationLat":  restaurant.LocationLat,
+		"LocationLong": restaurant.LocationLong,
+		"PhoneNumber":  restaurant.PhoneNumber,
+		"AveragePrice": restaurant.AveragePrice,
+		"ImageUrl":     restaurant.ImageUrl,
+		"IsInService":  restaurant.IsInService,
+	}
+}
+
 func (r *Restaurant) ToDomain() *domain.Restaurant {
 	var restaurantTypes []domain.RestaurantType
 	for _, restaurantType := range r.Types {

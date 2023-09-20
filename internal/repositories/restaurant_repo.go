@@ -24,8 +24,15 @@ func (r *restaurantRepository) Create(payload *domain.Restaurant) error {
 
 func (r *restaurantRepository) Update(id uint32, payload *domain.Restaurant) error {
 	restaurant := models.ParseRestaurant(payload)
+	restaurantMap := models.ParseRestaurantToMap(payload)
+	restaurant.Id = id
+	types := restaurant.Types
 
-	return r.db.Model(&restaurant).Where("id = ?", id).Updates(restaurant).Error
+	if err := r.db.Model(&restaurant).Association("Types").Replace(types); err != nil {
+		return err
+	}
+
+	return r.db.Model(&restaurant).Updates(restaurantMap).Error
 }
 
 func (r *restaurantRepository) FindById(id uint32) (domain.Restaurant, error) {

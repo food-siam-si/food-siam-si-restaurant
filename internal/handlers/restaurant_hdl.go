@@ -86,7 +86,28 @@ func (handler RestaurantHandler) FindById(ctx context.Context, req *wrapperspb.U
 }
 
 func (handler RestaurantHandler) Update(ctx context.Context, req *proto.UpdateRestaurantRequest) (*emptypb.Empty, error) {
-	return &emptypb.Empty{}, nil
+	var restaurantType []domain.RestaurantType
+
+	for _, id := range req.RestaurantTypeIds {
+		restaurantType = append(restaurantType, domain.RestaurantType{
+			Id: id,
+		})
+	}
+
+	restaurant := domain.Restaurant{
+		Name:         req.Name,
+		Description:  req.Description,
+		PhoneNumber:  req.PhoneNumber,
+		UserId:       req.User.Id,
+		LocationLat:  req.LocationLat,
+		LocationLong: req.LocationLong,
+		ImageUrl:     req.ImageUrl,
+		IsInService:  req.IsInService,
+		Types:        restaurantType,
+		AveragePrice: parseAveragePriceToDomain(req.AveragePrice),
+	}
+
+	return &emptypb.Empty{}, handler.svc.Update(req.Id, restaurant)
 }
 
 func (handler RestaurantHandler) Random(ctx context.Context, req *proto.RandomRestaurantRequest) (*proto.Restaurant, error) {

@@ -1,6 +1,7 @@
 package services
 
 import (
+	"errors"
 	"food-siam-si-restaurant/internal/core/domain"
 	"food-siam-si-restaurant/internal/core/ports"
 )
@@ -23,11 +24,8 @@ func (svc *restaurantService) VerifyRestaurantIdentity(id uint32, userId uint32)
 }
 
 func (svc *restaurantService) Create(restaurant domain.Restaurant) error {
-	// check if type is valid or not
-	for _, restarestaurantType := range restaurant.Types {
-		if _, err := svc.repo.FindTypeById(restarestaurantType.Id); err != nil {
-			return err
-		}
+	if err := svc.isValidType(restaurant.Types); err != nil {
+		return err
 	}
 
 	return svc.repo.Create(&restaurant)
@@ -38,7 +36,19 @@ func (svc *restaurantService) FindById(id uint32) (domain.Restaurant, error) {
 }
 
 func (svc *restaurantService) Update(id uint32, restaurant domain.Restaurant) error {
-	return nil
+	current, err := svc.repo.FindById(id)
+	if err != nil {
+		return err
+	}
+	if current.UserId != restaurant.UserId {
+		return errors.New("forbidden")
+	}
+
+	if err := svc.isValidType(restaurant.Types); err != nil {
+		return err
+	}
+
+	return svc.repo.Update(id, &restaurant)
 }
 
 func (svc *restaurantService) RandomRestaurant() (domain.Restaurant, error) {
@@ -47,4 +57,14 @@ func (svc *restaurantService) RandomRestaurant() (domain.Restaurant, error) {
 
 func (svc *restaurantService) FindAllType() ([]domain.RestaurantType, error) {
 	return svc.repo.FindAllType()
+}
+
+func (svc *restaurantService) isValidType(restaurantTypes []domain.RestaurantType) error {
+	for _, restaurantType := range restaurantTypes {
+		if _, err := svc.repo.FindTypeById(restaurantType.Id); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
