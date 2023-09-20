@@ -22,7 +22,12 @@ func NewRestaurantHandler(svc ports.RestaurantService) proto.RestaurantServiceSe
 }
 
 func (handler RestaurantHandler) VerifyIdentity(ctx context.Context, req *proto.VerifyRestaurantIdentityRequest) (*wrapperspb.BoolValue, error) {
-	return wrapperspb.Bool(true), nil
+	res, err := handler.svc.VerifyRestaurantIdentity(req.Id, req.User.Id)
+	if err != nil {
+		return wrapperspb.Bool(false), err
+	}
+
+	return wrapperspb.Bool(res), nil
 }
 
 func (handler RestaurantHandler) Create(ctx context.Context, req *proto.CreateRestaurantRequest) (*emptypb.Empty, error) {

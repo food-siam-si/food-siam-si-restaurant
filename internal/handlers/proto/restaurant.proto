@@ -38,8 +38,8 @@ service RestaurantService {
 }
 
 message VerifyRestaurantIdentityRequest {
-  uint32 restaurantId = 1;
-  User user = 3;
+  uint32 id = 1;
+  User user = 2;
 }
 
 message CreateRestaurantRequest {

@@ -13,8 +13,13 @@ func NewRestaurantService(repo ports.RestaurantRepository) ports.RestaurantServi
 	return &restaurantService{repo}
 }
 
-func (svc *restaurantService) VerifyRestaurantIdentity(id uint32) error {
-	return nil
+func (svc *restaurantService) VerifyRestaurantIdentity(id uint32, userId uint32) (bool, error) {
+	res, err := svc.repo.FindById(id)
+	if err != nil {
+		return false, err
+	}
+
+	return res.UserId == userId, nil
 }
 
 func (svc *restaurantService) Create(restaurant domain.Restaurant) error {
