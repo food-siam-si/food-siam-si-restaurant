@@ -31,7 +31,28 @@ func (handler RestaurantHandler) VerifyIdentity(ctx context.Context, req *proto.
 }
 
 func (handler RestaurantHandler) Create(ctx context.Context, req *proto.CreateRestaurantRequest) (*emptypb.Empty, error) {
-	return &emptypb.Empty{}, nil
+	var restaurantType []domain.RestaurantType
+
+	for _, id := range req.RestaurantTypeIds {
+		restaurantType = append(restaurantType, domain.RestaurantType{
+			Id: id,
+		})
+	}
+
+	restaurant := domain.Restaurant{
+		Name:         req.Name,
+		Description:  req.Description,
+		PhoneNumber:  req.PhoneNumber,
+		UserId:       req.User.Id,
+		LocationLat:  req.LocationLat,
+		LocationLong: req.LocationLong,
+		ImageUrl:     req.ImageUrl,
+		IsInService:  true,
+		Types:        restaurantType,
+		AveragePrice: parseAveragePriceToDomain(req.AveragePrice),
+	}
+
+	return &emptypb.Empty{}, handler.svc.Create(restaurant)
 }
 
 func (handler RestaurantHandler) FindById(ctx context.Context, req *wrapperspb.UInt32Value) (*proto.Restaurant, error) {
@@ -52,7 +73,7 @@ func (handler RestaurantHandler) FindById(ctx context.Context, req *wrapperspb.U
 	return &proto.Restaurant{
 		Id:             res.Id,
 		Name:           res.Name,
-		Description:    &res.Description,
+		Description:    res.Description,
 		PhoneNumber:    res.PhoneNumber,
 		UserId:         res.UserId,
 		LocationLat:    res.LocationLat,
@@ -86,5 +107,22 @@ func parseAveragePrice(averagePrice *domain.AveragePrice) proto.AveragePrice {
 		return proto.AveragePrice_MoreThanOneThousand
 	default:
 		return proto.AveragePrice_LowerThanHundreds
+	}
+}
+
+func parseAveragePriceToDomain(averagePrice proto.AveragePrice) domain.AveragePrice {
+	switch averagePrice {
+	case proto.AveragePrice_LowerThanHundreds:
+		return domain.LowerThanHundred
+	case proto.AveragePrice_HundredToTwoHundred:
+		return domain.HundredToTwoHundred
+	case proto.AveragePrice_TwoHundredToFiveHundred:
+		return domain.TwoHundredToFiveHundred
+	case proto.AveragePrice_MoreThanFiveHundred:
+		return domain.MoreThanFiveHundred
+	case proto.AveragePrice_MoreThanOneThousand:
+		return domain.MoreThanOneThousand
+	default:
+		return domain.LowerThanHundred
 	}
 }

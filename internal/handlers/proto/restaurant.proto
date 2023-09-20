@@ -11,7 +11,7 @@ message Restaurant {
   uint32 id = 1;
   uint32 userId = 2;
   string name = 3;
-  optional string description = 4;
+  string description = 4;
   float locationLat = 5;
   float locationLong = 6;
   string phoneNumber = 7;
@@ -44,21 +44,20 @@ message VerifyRestaurantIdentityRequest {
 
 message CreateRestaurantRequest {
   string name = 1;
-  optional string description = 2;
+  string description = 2;
   float locationLat = 3;
   float locationLong = 4;
   string phoneNumber = 5;
   AveragePrice averagePrice = 6;
   string imageUrl = 7;
-  bool isInService = 8;
-  repeated uint32 restaurantTypeIds = 9;
-  User user = 10;
+  repeated uint32 restaurantTypeIds = 8;
+  User user = 9;
 }
 
 message UpdateRestaurantRequest {
   uint32 id = 1;
   string name = 2;
-  optional string description = 3;
+  string description = 3;
   float locationLat = 4;
   float locationLong = 5;
   string phoneNumber = 6;

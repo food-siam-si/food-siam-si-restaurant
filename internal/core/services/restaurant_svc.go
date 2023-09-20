@@ -23,7 +23,14 @@ func (svc *restaurantService) VerifyRestaurantIdentity(id uint32, userId uint32)
 }
 
 func (svc *restaurantService) Create(restaurant domain.Restaurant) error {
-	return nil
+	// check if type is valid or not
+	for _, restarestaurantType := range restaurant.Types {
+		if _, err := svc.repo.FindTypeById(restarestaurantType.Id); err != nil {
+			return err
+		}
+	}
+
+	return svc.repo.Create(&restaurant)
 }
 
 func (svc *restaurantService) FindById(id uint32) (domain.Restaurant, error) {
