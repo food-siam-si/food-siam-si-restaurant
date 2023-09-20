@@ -2,17 +2,21 @@ package handlers
 
 import (
 	"context"
-	"food-siam-si-restaurant/internal/driver/proto"
+	"food-siam-si-restaurant/internal/core/ports"
+	"food-siam-si-restaurant/internal/handlers/proto"
 
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 type RestaurantTypeHandler struct {
+	svc ports.RestaurantService
 	proto.RestaurantTypeServiceServer
 }
 
-func NewRestaurantTypeHandler() proto.RestaurantTypeServiceServer {
-	return RestaurantTypeHandler{}
+func NewRestaurantTypeHandler(svc ports.RestaurantService) proto.RestaurantTypeServiceServer {
+	return RestaurantTypeHandler{
+		svc: svc,
+	}
 }
 
 func (handler RestaurantTypeHandler) GetAll(context.Context, *emptypb.Empty) (*proto.GetRestaurantTypeResponse, error) {
