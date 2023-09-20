@@ -22,11 +22,11 @@ func (r *restaurantRepository) Create(payload *domain.Restaurant) error {
 	return r.db.Create(restaurant).Error
 }
 
-func (r *restaurantRepository) Update(id string, payload *domain.Restaurant) error {
+func (r *restaurantRepository) Update(id uint, payload *domain.Restaurant) error {
 	return nil
 }
 
-func (r *restaurantRepository) FindById(id string) (domain.Restaurant, error) {
+func (r *restaurantRepository) FindById(id uint) (domain.Restaurant, error) {
 	return domain.Restaurant{}, nil
 }
 
@@ -36,4 +36,8 @@ func (r *restaurantRepository) FindAll() ([]domain.Restaurant, error) {
 
 func (r *restaurantRepository) FindAllType() ([]domain.RestaurantType, error) {
 	return []domain.RestaurantType{}, nil
+}
+
+func (r *restaurantRepository) FindTypeById(id uint) (domain.RestaurantType, error) {
+	return domain.RestaurantType{}, nil
 }

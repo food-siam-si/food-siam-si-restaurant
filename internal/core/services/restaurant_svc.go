@@ -1,11 +1,3 @@
-//	type RestaurantService interface {
-//		VerifyRestaurantIdentity(restaurantId string) error
-//		Create(restaurant domain.Restaurant) error
-//		FindById(id string) (domain.Restaurant, error)
-//		Update(id string, restaurant domain.Restaurant) error
-//		RandomRestaurant() (domain.Restaurant, error)
-//		FindAllType() ([]domain.RestaurantType, error)
-//	}
 package services
 
 import (
@@ -21,7 +13,7 @@ func NewRestaurantService(repo ports.RestaurantRepository) ports.RestaurantServi
 	return &restaurantService{repo}
 }
 
-func (svc *restaurantService) VerifyRestaurantIdentity(restaurantId string) error {
+func (svc *restaurantService) VerifyRestaurantIdentity(id uint) error {
 	return nil
 }
 
@@ -29,11 +21,11 @@ func (svc *restaurantService) Create(restaurant domain.Restaurant) error {
 	return nil
 }
 
-func (svc *restaurantService) FindById(id string) (domain.Restaurant, error) {
+func (svc *restaurantService) FindById(id uint) (domain.Restaurant, error) {
 	return domain.Restaurant{}, nil
 }
 
-func (svc *restaurantService) Update(id string, restaurant domain.Restaurant) error {
+func (svc *restaurantService) Update(id uint, restaurant domain.Restaurant) error {
 	return nil
 }
 
