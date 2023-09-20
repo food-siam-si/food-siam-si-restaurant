@@ -5,8 +5,8 @@ type Restaurant struct {
 	UserId       uint32
 	Name         string
 	Description  string
-	LocationLat  float64
-	LocationLong float64
+	LocationLat  float32
+	LocationLong float32
 	PhoneNumber  string
 	AveragePrice AveragePrice
 	ImageUrl     string
@@ -17,9 +17,9 @@ type Restaurant struct {
 type AveragePrice string
 
 const (
-	LowerThanHundread         AveragePrice = "LowerThanHundread"
-	HundreadToTwoHundread     AveragePrice = "HundreadToTwoHundread"
-	TwoHundreadToFiveHundread AveragePrice = "TwoHundreadToFiveHundread"
-	MoreThanFiveHundread      AveragePrice = "MoreThanFiveHundread"
-	MoreThanOneThousand       AveragePrice = "MoreThanOneThousand"
+	LowerThanHundred        AveragePrice = "LowerThanHundred"
+	HundredToTwoHundred     AveragePrice = "HundredToTwoHundred"
+	TwoHundredToFiveHundred AveragePrice = "TwoHundredToFiveHundred"
+	MoreThanFiveHundred     AveragePrice = "MoreThanFiveHundred"
+	MoreThanOneThousand     AveragePrice = "MoreThanOneThousand"
 )

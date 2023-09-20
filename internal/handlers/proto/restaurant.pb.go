@@ -26,9 +26,9 @@ type AveragePrice int32
 
 const (
 	AveragePrice_LowerThanHundreds         AveragePrice = 0
-	AveragePrice_HundreadToTwoHundread     AveragePrice = 1
-	AveragePrice_TwoHundreadToFiveHundread AveragePrice = 2
-	AveragePrice_MoreThanFiveHundread      AveragePrice = 3
+	AveragePrice_HundredToTwoHundred     AveragePrice = 1
+	AveragePrice_TwoHundredToFiveHundred AveragePrice = 2
+	AveragePrice_MoreThanFiveHundred      AveragePrice = 3
 	AveragePrice_MoreThanOneThousand       AveragePrice = 4
 )
 
@@ -36,16 +36,16 @@ const (
 var (
 	AveragePrice_name = map[int32]string{
 		0: "LowerThanHundreds",
-		1: "HundreadToTwoHundread",
-		2: "TwoHundreadToFiveHundread",
-		3: "MoreThanFiveHundread",
+		1: "HundredToTwoHundred",
+		2: "TwoHundredToFiveHundred",
+		3: "MoreThanFiveHundred",
 		4: "MoreThanOneThousand",
 	}
 	AveragePrice_value = map[string]int32{
 		"LowerThanHundreds":         0,
-		"HundreadToTwoHundread":     1,
-		"TwoHundreadToFiveHundread": 2,
-		"MoreThanFiveHundread":      3,
+		"HundredToTwoHundred":     1,
+		"TwoHundredToFiveHundred": 2,
+		"MoreThanFiveHundred":      3,
 		"MoreThanOneThousand":       4,
 	}
 )

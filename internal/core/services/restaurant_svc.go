@@ -22,7 +22,7 @@ func (svc *restaurantService) Create(restaurant domain.Restaurant) error {
 }
 
 func (svc *restaurantService) FindById(id uint32) (domain.Restaurant, error) {
-	return domain.Restaurant{}, nil
+	return svc.repo.FindById(id)
 }
 
 func (svc *restaurantService) Update(id uint32, restaurant domain.Restaurant) error {

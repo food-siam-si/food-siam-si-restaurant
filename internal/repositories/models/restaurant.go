@@ -7,10 +7,10 @@ type Restaurant struct {
 	UserId       uint32 `gorm:"not null"`
 	Name         string `gorm:"not null"`
 	Description  string
-	LocationLat  float64             `gorm:"not null"`
-	LocationLong float64             `gorm:"not null"`
+	LocationLat  float32             `gorm:"not null"`
+	LocationLong float32             `gorm:"not null"`
 	PhoneNumber  string              `gorm:"not null"`
-	AveragePrice domain.AveragePrice `sql:"type:ENUM('LowerThanHundread','HundreadToTwoHundread','TwoHundreadToFiveHundread','MoreThanFiveHundread','MoreThanOneThousand')"`
+	AveragePrice domain.AveragePrice `sql:"type:ENUM('LowerThanHundred','HundredToTwoHundred','TwoHundredToFiveHundred','MoreThanFiveHundred','MoreThanOneThousand')"`
 	ImageUrl     string              `gorm:"not null"`
 	IsInService  bool                `gorm:"not null;default:true"`
 	Types        []RestaurantType    `gorm:"many2many:restaurant_restaurant_type"`
