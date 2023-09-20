@@ -2,32 +2,28 @@ package main
 
 import (
 	"food-siam-si-restaurant/config"
-	"food-siam-si-restaurant/infrastructure/database"
-	"food-siam-si-restaurant/internal/core/domain"
-	"food-siam-si-restaurant/internal/repositories"
+	"food-siam-si-restaurant/internal/driver/handlers"
+	"food-siam-si-restaurant/internal/driver/proto"
+	"log"
+	"net"
+
+	"google.golang.org/grpc"
 )
 
 func main() {
 	config.Load()
 
-	db := database.NewGorm()
-	restaurantRepo := repositories.NewRestaurantRepository(db)
+	// db := database.NewGorm()
+	// restaurantRepo := repositories.NewRestaurantRepository(db)
 
-	restaurantRepo.Create(&domain.Restaurant{
-		Name:         "Siam Si Restaurant",
-		UserId:       1,
-		Description:  "Siam Si Restaurant",
-		LocationLat:  1.5,
-		LocationLong: 2.5,
-		PhoneNumber:  "08123456789",
-		AveragePrice: domain.AveragePrice("LowerThanHundread"),
-		ImageUrl:     "www.google.com",
-		IsInService:  true,
-		Types: []domain.RestaurantType{
-			{
-				Id: 2,
-			},
-		},
-	})
+	grpcServer := grpc.NewServer()
+	restaurantTypeHdl := handlers.NewRestaurantTypeHandler()
+	proto.RegisterRestaurantTypeServiceServer(grpcServer, restaurantTypeHdl)
+
+	lis, err := net.Listen("tcp", config.Get().App.Host)
+	if err != nil {
+		log.Fatalf("failed to listen: %v", err)
+	}
+	grpcServer.Serve(lis)
 
 }
