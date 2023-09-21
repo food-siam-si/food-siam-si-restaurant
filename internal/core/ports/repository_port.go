@@ -9,4 +9,5 @@ type RestaurantRepository interface {
 	FindAll() ([]domain.Restaurant, error)
 	FindAllType() ([]domain.RestaurantType, error)
 	FindTypeById(id uint32) (domain.RestaurantType, error)
+	FindByUserId(userId uint32) (domain.Restaurant, error)
 }

@@ -4,7 +4,7 @@ import "food-siam-si-restaurant/internal/core/domain"
 
 type Restaurant struct {
 	Id           uint32 `gorm:"primaryKey;autoIncrement"`
-	UserId       uint32 `gorm:"not null"`
+	UserId       uint32 `gorm:"not null,uniqueIndex"`
 	Name         string `gorm:"not null"`
 	Description  string
 	LocationLat  float32             `gorm:"not null"`

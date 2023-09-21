@@ -2,8 +2,11 @@ package services
 
 import (
 	"errors"
+	"fmt"
 	"food-siam-si-restaurant/internal/core/domain"
 	"food-siam-si-restaurant/internal/core/ports"
+
+	"gorm.io/gorm"
 )
 
 type restaurantService struct {
@@ -24,6 +27,17 @@ func (svc *restaurantService) VerifyRestaurantIdentity(id uint32, userId uint32)
 }
 
 func (svc *restaurantService) Create(restaurant domain.Restaurant) error {
+
+	_, err := svc.repo.FindByUserId(restaurant.UserId)
+	if err == nil {
+		return errors.New("restaurant already exist")
+	}
+	if !errors.Is(err, gorm.ErrRecordNotFound) {
+		return err
+	}
+
+	fmt.Print(restaurant.UserId)
+
 	if err := svc.isValidType(restaurant.Types); err != nil {
 		return err
 	}

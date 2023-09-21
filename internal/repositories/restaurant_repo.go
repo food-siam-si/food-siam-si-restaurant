@@ -86,3 +86,11 @@ func (r *restaurantRepository) FindTypeById(id uint32) (domain.RestaurantType, e
 
 	return *restaurantType.ToDomain(), err
 }
+
+func (r *restaurantRepository) FindByUserId(userId uint32) (domain.Restaurant, error) {
+	restaurant := models.Restaurant{}
+
+	err := r.db.Where("user_id = ?", userId).First(&restaurant).Error
+
+	return *restaurant.ToDomain(), err
+}
