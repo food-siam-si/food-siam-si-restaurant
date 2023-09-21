@@ -85,7 +85,37 @@ func (handler RestaurantHandler) FindById(ctx context.Context, req *wrapperspb.U
 	}, nil
 }
 
-func (handler RestaurantHandler) Update(ctx context.Context, req *proto.UpdateRestaurantRequest) (*emptypb.Empty, error) {
+func (handler RestaurantHandler) GetCurrent(ctx context.Context, req *proto.GetCurrentRestaurantRequest) (*proto.Restaurant, error) {
+	res, err := handler.svc.GetCurrent(req.User.Id)
+	if err != nil {
+		return nil, err
+	}
+
+	var restaurantType []*proto.RestaurantType
+
+	for _, v := range res.Types {
+		restaurantType = append(restaurantType, &proto.RestaurantType{
+			Id:   v.Id,
+			Name: v.Name,
+		})
+	}
+
+	return &proto.Restaurant{
+		Id:             res.Id,
+		Name:           res.Name,
+		Description:    res.Description,
+		PhoneNumber:    res.PhoneNumber,
+		UserId:         res.UserId,
+		LocationLat:    res.LocationLat,
+		LocationLong:   res.LocationLong,
+		ImageUrl:       res.ImageUrl,
+		IsInService:    res.IsInService,
+		RestaurantType: restaurantType,
+		AveragePrice:   parseAveragePrice(&res.AveragePrice),
+	}, nil
+}
+
+func (handler RestaurantHandler) UpdateCurrent(ctx context.Context, req *proto.UpdateCurrentRestaurantRequest) (*emptypb.Empty, error) {
 	var restaurantType []domain.RestaurantType
 
 	for _, id := range req.RestaurantTypeIds {
@@ -107,7 +137,7 @@ func (handler RestaurantHandler) Update(ctx context.Context, req *proto.UpdateRe
 		AveragePrice: parseAveragePriceToDomain(req.AveragePrice),
 	}
 
-	return &emptypb.Empty{}, handler.svc.Update(req.Id, restaurant)
+	return &emptypb.Empty{}, handler.svc.UpdateCurrent(req.User.Id, restaurant)
 }
 
 func (handler RestaurantHandler) Random(ctx context.Context, req *proto.RandomRestaurantRequest) (*proto.Restaurant, error) {

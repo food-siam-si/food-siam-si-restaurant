@@ -22,17 +22,21 @@ func (r *restaurantRepository) Create(payload *domain.Restaurant) error {
 	return r.db.Create(restaurant).Error
 }
 
-func (r *restaurantRepository) Update(id uint32, payload *domain.Restaurant) error {
-	restaurant := models.ParseRestaurant(payload)
-	restaurantMap := models.ParseRestaurantToMap(payload)
-	restaurant.Id = id
-	types := restaurant.Types
+func (r *restaurantRepository) UpdateByUserId(userId uint32, payload *domain.Restaurant) error {
+	domainRestaurant, err := r.FindByUserId(userId)
+	if err != nil {
+		return err
+	}
+	currentRestaurant := models.ParseRestaurant(&domainRestaurant)
 
-	if err := r.db.Model(&restaurant).Association("Types").Replace(types); err != nil {
+	restaurantMap := models.ParseRestaurantToMap(payload)
+	types := models.ParseRestaurant(payload).Types
+
+	if err := r.db.Model(&currentRestaurant).Association("Types").Replace(types); err != nil {
 		return err
 	}
 
-	return r.db.Model(&restaurant).Updates(restaurantMap).Error
+	return r.db.Model(&currentRestaurant).Updates(restaurantMap).Error
 }
 
 func (r *restaurantRepository) FindById(id uint32) (domain.Restaurant, error) {
@@ -90,7 +94,7 @@ func (r *restaurantRepository) FindTypeById(id uint32) (domain.RestaurantType, e
 func (r *restaurantRepository) FindByUserId(userId uint32) (domain.Restaurant, error) {
 	restaurant := models.Restaurant{}
 
-	err := r.db.Where("user_id = ?", userId).First(&restaurant).Error
+	err := r.db.Where("user_id = ?", userId).Preload("Types").First(&restaurant).Error
 
 	return *restaurant.ToDomain(), err
 }

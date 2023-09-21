@@ -23,6 +23,7 @@ func ParseRestaurant(restaurant *domain.Restaurant) *Restaurant {
 	}
 
 	return &Restaurant{
+		Id:           restaurant.Id,
 		UserId:       restaurant.UserId,
 		Name:         restaurant.Name,
 		Description:  restaurant.Description,

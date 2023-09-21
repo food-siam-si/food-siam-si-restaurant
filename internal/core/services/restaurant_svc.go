@@ -2,7 +2,6 @@ package services
 
 import (
 	"errors"
-	"fmt"
 	"food-siam-si-restaurant/internal/core/domain"
 	"food-siam-si-restaurant/internal/core/ports"
 
@@ -36,8 +35,6 @@ func (svc *restaurantService) Create(restaurant domain.Restaurant) error {
 		return err
 	}
 
-	fmt.Print(restaurant.UserId)
-
 	if err := svc.isValidType(restaurant.Types); err != nil {
 		return err
 	}
@@ -49,20 +46,21 @@ func (svc *restaurantService) FindById(id uint32) (domain.Restaurant, error) {
 	return svc.repo.FindById(id)
 }
 
-func (svc *restaurantService) Update(id uint32, restaurant domain.Restaurant) error {
-	current, err := svc.repo.FindById(id)
+func (svc *restaurantService) GetCurrent(userId uint32) (domain.Restaurant, error) {
+	return svc.repo.FindByUserId(userId)
+}
+
+func (svc *restaurantService) UpdateCurrent(userId uint32, restaurant domain.Restaurant) error {
+	_, err := svc.repo.FindByUserId(userId)
 	if err != nil {
 		return err
-	}
-	if current.UserId != restaurant.UserId {
-		return errors.New("forbidden")
 	}
 
 	if err := svc.isValidType(restaurant.Types); err != nil {
 		return err
 	}
 
-	return svc.repo.Update(id, &restaurant)
+	return svc.repo.UpdateByUserId(userId, &restaurant)
 }
 
 func (svc *restaurantService) RandomRestaurant() (domain.Restaurant, error) {
