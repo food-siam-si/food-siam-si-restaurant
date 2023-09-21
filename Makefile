@@ -1,5 +1,5 @@
 dev:
-	air server -c air.toml
+	air server -c .air.toml
 
 protoc:
 	protoc --go_out=. \

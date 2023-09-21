@@ -5,6 +5,8 @@ import (
 	"food-siam-si-restaurant/internal/core/domain"
 	"food-siam-si-restaurant/internal/core/ports"
 
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"gorm.io/gorm"
 )
 
@@ -19,7 +21,7 @@ func NewRestaurantService(repo ports.RestaurantRepository) ports.RestaurantServi
 func (svc *restaurantService) VerifyRestaurantIdentity(id uint32, userId uint32) (bool, error) {
 	res, err := svc.repo.FindById(id)
 	if err != nil {
-		return false, err
+		return false, status.Error(codes.NotFound, err.Error())
 	}
 
 	return res.UserId == userId, nil
@@ -29,35 +31,43 @@ func (svc *restaurantService) Create(restaurant domain.Restaurant) error {
 
 	_, err := svc.repo.FindByUserId(restaurant.UserId)
 	if err == nil {
-		return errors.New("restaurant already exist")
+		return status.Error(codes.AlreadyExists, "restaurant already exists")
 	}
 	if !errors.Is(err, gorm.ErrRecordNotFound) {
 		return err
 	}
 
 	if err := svc.isValidType(restaurant.Types); err != nil {
-		return err
+		return status.Error(codes.InvalidArgument, "invalid restaurant type")
 	}
 
 	return svc.repo.Create(&restaurant)
 }
 
 func (svc *restaurantService) FindById(id uint32) (domain.Restaurant, error) {
-	return svc.repo.FindById(id)
+	res, err := svc.repo.FindById(id)
+	if err == gorm.ErrRecordNotFound {
+		return res, status.Error(codes.NotFound, "restaurant not found")
+	}
+	return res, err
 }
 
 func (svc *restaurantService) GetCurrent(userId uint32) (domain.Restaurant, error) {
-	return svc.repo.FindByUserId(userId)
+	res, err := svc.repo.FindByUserId(userId)
+	if err == gorm.ErrRecordNotFound {
+		return res, status.Error(codes.NotFound, "restaurant not found")
+	}
+	return res, err
 }
 
 func (svc *restaurantService) UpdateCurrent(userId uint32, restaurant domain.Restaurant) error {
 	_, err := svc.repo.FindByUserId(userId)
 	if err != nil {
-		return err
+		return status.Error(codes.NotFound, "restaurant not found")
 	}
 
 	if err := svc.isValidType(restaurant.Types); err != nil {
-		return err
+		return status.Error(codes.InvalidArgument, "invalid restaurant type")
 	}
 
 	return svc.repo.UpdateByUserId(userId, &restaurant)
