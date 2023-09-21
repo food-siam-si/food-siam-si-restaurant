@@ -10,7 +10,11 @@ import (
 	"log"
 	"net"
 
+	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/recovery"
+
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 func main() {
@@ -21,7 +25,20 @@ func main() {
 
 	restaurantService := services.NewRestaurantService(restaurantRepo)
 
-	grpcServer := grpc.NewServer()
+	customFunc := func(p any) (err error) {
+		return status.Errorf(codes.Unknown, "panic triggered: %v", p)
+	}
+
+	opts := []recovery.Option{
+		recovery.WithRecoveryHandler(customFunc),
+	}
+
+	grpcServer := grpc.NewServer(grpc.UnaryInterceptor(
+		recovery.UnaryServerInterceptor(opts...),
+	),
+		grpc.StreamInterceptor(
+			recovery.StreamServerInterceptor(opts...),
+		))
 	restaurantTypeHdl := handlers.NewRestaurantTypeHandler(restaurantService)
 	restaurantHdl := handlers.NewRestaurantHandler(restaurantService)
 	proto.RegisterRestaurantTypeServiceServer(grpcServer, restaurantTypeHdl)
