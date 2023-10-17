@@ -98,3 +98,11 @@ func (r *restaurantRepository) FindByUserId(userId uint32) (domain.Restaurant, e
 
 	return *restaurant.ToDomain(), err
 }
+
+func (r *restaurantRepository) UpdateScoreById(id uint32, score float32) error {
+	if _, err := r.FindById(id); err != nil {
+		return err
+	}
+
+	return r.db.Model(&models.Restaurant{}).Where("id = ?", id).Update("average_score", score).Error
+}

@@ -10,4 +10,5 @@ type RestaurantService interface {
 	GetCurrent(userId uint32) (domain.Restaurant, error)
 	RandomRestaurant() (domain.Restaurant, error)
 	FindAllType() ([]domain.RestaurantType, error)
+	UpdateAverageScore(restaurantId uint32, score float32) error
 }
