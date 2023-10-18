@@ -48,6 +48,10 @@ func main() {
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
+
+	kafkaHdl := handlers.NewKafkaHandler()
+	kafkaHdl.Listen()
+
 	grpcServer.Serve(lis)
 
 }
