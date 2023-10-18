@@ -13,14 +13,21 @@ type dbConfig struct {
 	Port     int    `envconfig:"DB_PORT"`
 }
 
+type kafkaConfig struct {
+	Broker  string `envconfig:"KAFKA_BROKER"`
+	Topic   string `envconfig:"KAFKA_TOPIC"`
+	GroupId string `envconfig:"KAFKA_GROUP_ID"`
+}
+
 type appConfig struct {
 	Environment string `envconfig:"ENV"`
 	Host        string `envconfig:"HOST"`
 }
 
 type config struct {
-	App appConfig
-	Db  dbConfig
+	App   appConfig
+	Db    dbConfig
+	Kafka kafkaConfig
 }
 
 var cfg config
@@ -36,4 +43,8 @@ func Get() config {
 
 func GetDb() dbConfig {
 	return cfg.Db
+}
+
+func GetKafka() kafkaConfig {
+	return cfg.Kafka
 }

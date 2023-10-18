@@ -2,38 +2,43 @@ package handlers
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
-	"log"
+	"food-siam-si-restaurant/internal/core/ports"
 
 	"github.com/segmentio/kafka-go"
 )
 
 type KafkaHandler struct {
+	r *kafka.Reader
+	s ports.RestaurantService
 }
 
-func NewKafkaHandler() *KafkaHandler {
-	return &KafkaHandler{}
+type KafkaMessage struct {
+	RestaurantId uint32  `json:"restaurantId"`
+	AverageScore float32 `json:"averageScore"`
+}
+
+func NewKafkaHandler(r *kafka.Reader, s ports.RestaurantService) *KafkaHandler {
+	return &KafkaHandler{
+		r: r,
+		s: s,
+	}
 }
 
 func (handler KafkaHandler) Listen() {
-	// make a new reader that consumes from topic-A, partition 0, at offset 42
-	r := kafka.NewReader(kafka.ReaderConfig{
-		Brokers:   []string{"localhost:29092"},
-		Topic:     "mytopic",
-		Partition: 0,
-		MaxBytes:  10e6, // 10MB
-		GroupID:   "consumer-group-id",
-	})
-
 	for {
-		m, err := r.ReadMessage(context.Background())
+		m, err := handler.r.ReadMessage(context.Background())
 		if err != nil {
 			break
 		}
-		fmt.Printf("message at offset %d: %s = %s\n", m.Offset, string(m.Key), string(m.Value))
-	}
 
-	if err := r.Close(); err != nil {
-		log.Fatal("failed to close reader:", err)
+		var message KafkaMessage
+
+		if err := json.Unmarshal([]byte(m.Value), &message); err != nil {
+			fmt.Println("Error unmarshaling JSON:", err)
+		}
+
+		handler.s.UpdateAverageScore(message.RestaurantId, message.AverageScore)
 	}
 }
