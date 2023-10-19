@@ -14,6 +14,7 @@ type Restaurant struct {
 	ImageUrl     string              `gorm:"not null"`
 	IsInService  bool                `gorm:"not null;default:true"`
 	Types        []RestaurantType    `gorm:"many2many:restaurant_restaurant_type"`
+	AverageScore float32             `gorm:"not null;default:-1"`
 }
 
 func ParseRestaurant(restaurant *domain.Restaurant) *Restaurant {
@@ -34,6 +35,7 @@ func ParseRestaurant(restaurant *domain.Restaurant) *Restaurant {
 		ImageUrl:     restaurant.ImageUrl,
 		IsInService:  restaurant.IsInService,
 		Types:        restaurantTypes,
+		AverageScore: restaurant.AverageScore,
 	}
 }
 
@@ -48,6 +50,7 @@ func ParseRestaurantToMap(restaurant *domain.Restaurant) *map[string]interface{}
 		"AveragePrice": restaurant.AveragePrice,
 		"ImageUrl":     restaurant.ImageUrl,
 		"IsInService":  restaurant.IsInService,
+		"AverageScore": restaurant.AverageScore,
 	}
 }
 
@@ -69,5 +72,6 @@ func (r *Restaurant) ToDomain() *domain.Restaurant {
 		ImageUrl:     r.ImageUrl,
 		IsInService:  r.IsInService,
 		Types:        restaurantTypes,
+		AverageScore: r.AverageScore,
 	}
 }

@@ -90,3 +90,12 @@ func (svc *restaurantService) isValidType(restaurantTypes []domain.RestaurantTyp
 
 	return nil
 }
+
+func (svc *restaurantService) UpdateAverageScore(restaurantId uint32, score float32) error {
+
+	if err := svc.repo.UpdateScoreById(restaurantId, score); err == gorm.ErrRecordNotFound {
+		return status.Error(codes.NotFound, "restaurant not found")
+	}
+
+	return nil
+}

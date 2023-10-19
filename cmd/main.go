@@ -3,6 +3,7 @@ package main
 import (
 	"food-siam-si-restaurant/config"
 	"food-siam-si-restaurant/infrastructure/database"
+	"food-siam-si-restaurant/infrastructure/messagequeue"
 	"food-siam-si-restaurant/internal/core/services"
 	"food-siam-si-restaurant/internal/handlers"
 	"food-siam-si-restaurant/internal/handlers/proto"
@@ -48,6 +49,13 @@ func main() {
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
+
+	kafkaReader := messagequeue.NewKafkaReader()
+	defer kafkaReader.Close()
+
+	kafkaHdl := handlers.NewKafkaHandler(kafkaReader, restaurantService)
+
+	go kafkaHdl.Listen()
 	grpcServer.Serve(lis)
 
 }

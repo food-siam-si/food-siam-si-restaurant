@@ -12,6 +12,7 @@ type Restaurant struct {
 	ImageUrl     string
 	IsInService  bool
 	Types        []RestaurantType
+	AverageScore float32
 }
 
 type AveragePrice string

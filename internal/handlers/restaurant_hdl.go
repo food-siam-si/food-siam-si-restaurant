@@ -82,6 +82,7 @@ func (handler RestaurantHandler) FindById(ctx context.Context, req *wrapperspb.U
 		IsInService:    res.IsInService,
 		RestaurantType: restaurantType,
 		AveragePrice:   parseAveragePrice(&res.AveragePrice),
+		AverageScore:   res.AverageScore,
 	}, nil
 }
 
@@ -112,6 +113,7 @@ func (handler RestaurantHandler) GetCurrent(ctx context.Context, req *proto.GetC
 		IsInService:    res.IsInService,
 		RestaurantType: restaurantType,
 		AveragePrice:   parseAveragePrice(&res.AveragePrice),
+		AverageScore:   res.AverageScore,
 	}, nil
 }
 
