@@ -14,7 +14,7 @@ type dbConfig struct {
 }
 
 type kafkaConfig struct {
-	Broker  string `envconfig:"KAFKA_BROKER"`
+	Broker  string `envconfig:"KAFKA_BROKER_URL"`
 	Topic   string `envconfig:"KAFKA_TOPIC"`
 	GroupId string `envconfig:"KAFKA_GROUP_ID"`
 }

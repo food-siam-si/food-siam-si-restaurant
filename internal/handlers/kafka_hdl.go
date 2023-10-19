@@ -26,7 +26,7 @@ func NewKafkaHandler(r *kafka.Reader, s ports.RestaurantService) *KafkaHandler {
 	}
 }
 
-func (handler KafkaHandler) Listen() {
+func (handler *KafkaHandler) Listen() {
 	for {
 		m, err := handler.r.ReadMessage(context.Background())
 		if err != nil {
