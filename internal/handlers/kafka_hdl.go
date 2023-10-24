@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"food-siam-si-restaurant/internal/core/ports"
+	"log"
+	"time"
 
 	"github.com/segmentio/kafka-go"
 )
@@ -30,7 +32,9 @@ func (handler *KafkaHandler) Listen() {
 	for {
 		m, err := handler.r.ReadMessage(context.Background())
 		if err != nil {
-			break
+			log.Print(err)
+			time.Sleep(5 * time.Second)
+			continue
 		}
 
 		var message KafkaMessage
