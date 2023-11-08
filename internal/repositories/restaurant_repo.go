@@ -4,8 +4,11 @@ import (
 	"food-siam-si-restaurant/internal/core/domain"
 	"food-siam-si-restaurant/internal/core/ports"
 	"food-siam-si-restaurant/internal/repositories/models"
+	util "food-siam-si-restaurant/internal/utils"
 
 	"gorm.io/gorm"
+
+	"slices"
 )
 
 type restaurantRepository struct {
@@ -47,7 +50,7 @@ func (r *restaurantRepository) FindById(id uint32) (domain.Restaurant, error) {
 	return *restaurant.ToDomain(), err
 }
 
-func (r *restaurantRepository) FindAll() ([]domain.Restaurant, error) {
+func (r *restaurantRepository) FindAll(restaurantTypeIds []uint32, currentLat float32, currentLong float32, maxDistanceKm uint32) ([]domain.Restaurant, error) {
 	restaurants := []models.Restaurant{}
 
 	err := r.db.Preload("Types").Find(&restaurants).Error
@@ -56,10 +59,22 @@ func (r *restaurantRepository) FindAll() ([]domain.Restaurant, error) {
 		return []domain.Restaurant{}, err
 	}
 
-	result := make([]domain.Restaurant, len(restaurants))
+	result := make([]domain.Restaurant, 0)
 
-	for i, restaurant := range restaurants {
-		result[i] = *restaurant.ToDomain()
+	const EarthRadiusKm = 6371.0 // Earth's radius in kilometers
+
+	for _, restaurant := range restaurants {
+		if util.FindDistance(float64(currentLat), float64(currentLong), float64(restaurant.LocationLat), float64(restaurant.LocationLong)) <= float64(maxDistanceKm) {
+			for _, eachRestaurantType := range restaurant.Types {
+				if !restaurant.IsInService {
+					continue
+				}
+				if slices.Contains(restaurantTypeIds, uint32(eachRestaurantType.Id)) {
+					result = append(result, *restaurant.ToDomain())
+					break
+				}
+			}
+		}
 	}
 
 	return result, nil

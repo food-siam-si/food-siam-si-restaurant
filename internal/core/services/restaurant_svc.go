@@ -8,6 +8,9 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"gorm.io/gorm"
+
+	"fmt"
+	"math/rand"
 )
 
 type restaurantService struct {
@@ -73,8 +76,19 @@ func (svc *restaurantService) UpdateCurrent(userId uint32, restaurant domain.Res
 	return svc.repo.UpdateByUserId(userId, &restaurant)
 }
 
-func (svc *restaurantService) RandomRestaurant() (domain.Restaurant, error) {
-	return domain.Restaurant{}, nil
+func (svc *restaurantService) RandomRestaurant(restaurantTypeIds []uint32, currentLat float32, currentLong float32, maxDistanceKm uint32) (domain.Restaurant, error) {
+	res, err := svc.repo.FindAll(restaurantTypeIds, currentLat, currentLong, maxDistanceKm)
+
+	if len(res) == 0 {
+		return domain.Restaurant{}, status.Error(codes.NotFound, "restaurant not found")
+	}
+
+	fmt.Print(len(res))
+
+	choose := res[rand.Intn(len(res))]
+
+	return choose, err
+
 }
 
 func (svc *restaurantService) FindAllType() ([]domain.RestaurantType, error) {
