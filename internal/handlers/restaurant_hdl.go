@@ -143,7 +143,34 @@ func (handler RestaurantHandler) UpdateCurrent(ctx context.Context, req *proto.U
 }
 
 func (handler RestaurantHandler) Random(ctx context.Context, req *proto.RandomRestaurantRequest) (*proto.Restaurant, error) {
-	return &proto.Restaurant{}, nil
+
+	res, err := handler.svc.RandomRestaurant(req.RestaurantTypeIds, req.CurrentLat, req.CurrentLong, req.MaxDistanceKm)
+	if err != nil {
+		return nil, err
+	}
+
+	var restaurantType []*proto.RestaurantType
+
+	for _, v := range res.Types {
+		restaurantType = append(restaurantType, &proto.RestaurantType{
+			Id:   v.Id,
+			Name: v.Name,
+		})
+	}
+
+	return &proto.Restaurant{
+		Id:             res.Id,
+		Name:           res.Name,
+		Description:    res.Description,
+		PhoneNumber:    res.PhoneNumber,
+		UserId:         res.UserId,
+		LocationLat:    res.LocationLat,
+		LocationLong:   res.LocationLong,
+		ImageUrl:       res.ImageUrl,
+		IsInService:    res.IsInService,
+		RestaurantType: restaurantType,
+		AveragePrice:   parseAveragePrice(&res.AveragePrice),
+	}, nil
 }
 
 func parseAveragePrice(averagePrice *domain.AveragePrice) proto.AveragePrice {
