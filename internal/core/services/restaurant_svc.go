@@ -64,7 +64,7 @@ func (svc *restaurantService) GetCurrent(userId uint32) (domain.Restaurant, erro
 }
 
 func (svc *restaurantService) UpdateCurrent(userId uint32, restaurant domain.Restaurant) error {
-	_, err := svc.repo.FindByUserId(userId)
+	tmpRes, err := svc.repo.FindByUserId(userId)
 	if err != nil {
 		return status.Error(codes.NotFound, "restaurant not found")
 	}
@@ -72,6 +72,8 @@ func (svc *restaurantService) UpdateCurrent(userId uint32, restaurant domain.Res
 	if err := svc.isValidType(restaurant.Types); err != nil {
 		return status.Error(codes.InvalidArgument, "invalid restaurant type")
 	}
+
+	restaurant.AverageScore = tmpRes.AverageScore
 
 	return svc.repo.UpdateByUserId(userId, &restaurant)
 }
